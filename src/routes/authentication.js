@@ -2,7 +2,7 @@ const express =require('express');
 const router = express.Router();
 
 const passport = require('passport');
-const {ValidSession } = require('../lib/auth');
+const {ValidSession ,IsNotSession} = require('../lib/auth');
 
 router.get('/signup',(req,res) =>{
     res.render('auth/signup');
@@ -14,7 +14,7 @@ router.post('/signup',passport.authenticate('local.signup',{
         failureFlash: true
 }));
 
-router.get('/login',(req,res) =>{
+router.get('/login',IsNotSession,(req,res) =>{
     res.render('auth/login');
 });
 router.post('/login',(req,res,next) =>{

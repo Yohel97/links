@@ -2,7 +2,7 @@ const express =require('express');
 const router = express.Router();
 
 const pool = require('../database');
-const {ValidSession} =require('../lib/auth');
+const {ValidSession } =require('../lib/auth');
 
 router.get('/add',ValidSession,(req,res) =>{
   res.render('links/add');
@@ -13,7 +13,8 @@ router.post('/add',ValidSession,async(req, res) => {
   const newlink = {
     title,
     url,
-    description
+    description,
+    user_id: req.user.id
   };
  //? significael dato que se le va apasar
   await pool.query('insert into links set ?',[newlink]);
@@ -24,9 +25,9 @@ router.post('/add',ValidSession,async(req, res) => {
 });
 
 router.get('/',ValidSession,async(req,res) =>{
-  const links = await pool.query('select * from links');
+  const links = await pool.query('select * from links where user_id = ?',[req.user.id]);
 //console.log(links);
-  res.render('links/list',{ links });
+ res.render('links/list',{ links });
 });
 
 router.get('/delete/:id', ValidSession,async(req,res) =>{
