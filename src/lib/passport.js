@@ -14,14 +14,19 @@ passport.use('local.login', new LocalStrategy({
 
     if(UsersName.length > 0){
         const user = UsersName[0];
-        const ValidPassword = await helpers.comperdPassword(password, user.password );
+        if (user.username == username){
+         const ValidPassword = await helpers.comperdPassword(password, user.password );
 
-        if(ValidPassword){
+          if(ValidPassword){
             done(null,user,req.flash('success','Bienvenido ' + user.username));
 
-        }else{
+          }else{
             done(null,false, req.flash('message','Constraseña incorrecta'));
-        }
+          }
+
+        }else{
+        done(null,false,req.flash('message','Usuario no registrado'));
+        }   
 
     } else{
         done(null,false, req.flash('message','Usuario no registrado'));
