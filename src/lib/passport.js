@@ -63,7 +63,7 @@ passport.use('local.signup', new LocalStrategy({
             const result = await pool.query('insert into users set ?',[newUser]);
             //console.log(result);
             newUser.id = result.insertId;
-            return  done(null, newUsern);
+            return  done(null, newUser);
           }
 
         } else{
