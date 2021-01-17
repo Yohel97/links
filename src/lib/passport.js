@@ -14,14 +14,19 @@ passport.use('local.login', new LocalStrategy({
 
     if(UsersName.length > 0){
         const user = UsersName[0];
-        const ValidPassword = await helpers.comperdPassword(password, user.password );
+        if (user.username == username){
+         const ValidPassword = await helpers.comperdPassword(password, user.password );
 
-        if(ValidPassword){
+          if(ValidPassword){
             done(null,user,req.flash('success','Bienvenido ' + user.username));
 
-        }else{
+          }else{
             done(null,false, req.flash('message','Constraseña incorrecta'));
-        }
+          }
+
+        }else{
+        done(null,false,req.flash('message','Usuario no registrado'));
+        }   
 
     } else{
         done(null,false, req.flash('message','Usuario no registrado'));
@@ -58,7 +63,7 @@ passport.use('local.signup', new LocalStrategy({
             const result = await pool.query('insert into users set ?',[newUser]);
             //console.log(result);
             newUser.id = result.insertId;
-            return  done(null, newUsern);
+            return  done(null, newUser);
           }
 
         } else{

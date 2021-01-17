@@ -8,10 +8,10 @@ module.exports = {
     },
 
     IsNotSession(req,res,next){
-        if(!req.isAuthenticated()){
-            return next();
+        if(req.isAuthenticated()){
+            return  res.redirect('/profile');
         }
-        return  res.redirect('/profile');
+        return next();
 
     }
 
