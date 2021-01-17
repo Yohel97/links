@@ -38,7 +38,7 @@ router.get('/delete/:id', ValidSession,async(req,res) =>{
    res.redirect('/links');
 });
 
-router.get('/edit/:id',ValidSession,async(req,res) =>{
+router.get('/edit/:id', ValidSession,async(req,res) =>{
   const { id } = req.params;
   const links = await pool.query('select * from links where id= ?',[id]);
  //console.log(links[0]);//solo optenemos un objeto no el arreglo completo
